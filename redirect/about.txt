@@ -1,0 +1,18 @@
+Title: URL Redirection
+Author: Taufik Nurrohman
+URL: http://latitudu.com
+Version: 1.0.0
+
+====
+
+> URL redirection tool.
+
+People usually use this kind of tool to hide their affiliate links. This plugin will also counts the number of the redirection [&ldquo;hits&rdquo;](http://en.wikipedia.org/wiki/Hit_(Internet) "Wikipedia &ndash; Hit (Internet)"). This is useful for monitoring the redirection statistics, or maybe you can just use it as a download counter, for example:
+
+~~~ .markdown
+[Click Here to Download](`{{redirect.url id:foo}}`) {.btn.btn-download}
+
+**Downloaded `{{redirect.hits id:foo}}` times!**
+~~~
+
+*[URL]: Uniform Resource Locator

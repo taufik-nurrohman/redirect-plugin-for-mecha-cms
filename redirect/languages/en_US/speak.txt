@@ -1,0 +1,14 @@
+plugin_redirect_title_data: Data
+plugin_redirect_title_redirect: Redirection
+plugin_redirect_title_new_redirection: New Redirection
+plugin_redirect_title_domain: Domain
+plugin_redirect_title_destination: Destination
+plugin_redirect_title_hits: Hits
+plugin_redirect_title_get_url: Get URL
+
+plugin_redirect_title_direct_link: Direct Link
+
+plugin_redirect_description_slug: Changing this will kill the redirection links that you have shared to your friends.
+plugin_redirect_description_domain: If you have a parked domain to shorten the redirection URL, you can add it here.
+plugin_redirect_description_direct_link: Not maintainable, should be used for sharing only.
+plugin_redirect_description_shortcode: Maintainable, used for local only. Embed this code to your article and page content.

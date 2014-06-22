@@ -1,0 +1,18 @@
+Title: Pengarah URL
+Author: Taufik Nurrohman
+URL: http://latitudu.com
+Version: 1.0.0
+
+====
+
+> Alat pengarah URL.
+
+Orang-orang biasanya menggunakan alat semacam ini untuk menyembunyikan tautan afiliasi mereka. Plugin ini juga akan menghitung jumlah [&ldquo;hits&rdquo;](http://en.wikipedia.org/wiki/Hit_(Internet) "Wikipedia &ndash; Hit (Internet)") pengalihan. Ini berguna untuk memantau statistik pengalihan, atau mungkin Anda juga dapat menggunakannya sebagai pemantau statistik unduhan, misalnya seperti ini:
+
+~~~ .markdown
+[Klik untuk Mengunduh](`{{redirect.url id:foo}}`) {.btn.btn-download}
+
+**Telah diunduh sebanyak `{{redirect.hits id:foo}}` kali!**
+~~~
+
+*[URL]: Uniform Resource Locator
