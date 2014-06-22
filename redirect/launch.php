@@ -125,7 +125,7 @@ Route::accept($config->manager->slug . '/plugin/redirect/update', function() use
     if($request = Request::post()) {
         Guardian::checkToken($request['token']);
         unset($request['token']);
-        File::write(serialize($request))->saveTo(PLUGIN . DS . 'redirect' . DS . 'states' . DS . 'config.txt');
+        File::write(serialize($request))->saveTo(PLUGIN . DS . 'redirect' . DS . 'states' . DS . 'config.txt', 0600);
         Notify::success(Config::speak('notify_success_updated', array($speak->plugin)));
         Guardian::kick(dirname($config->url_current));
     }
