@@ -1,6 +1,6 @@
 <?php
 
-$redirect_config = unserialize(File::open(PLUGIN . DS . 'redirect' . DS . 'states' . DS . 'config.txt')->read());
+$redirect_config = File::open(PLUGIN . DS . 'redirect' . DS . 'states' . DS . 'config.txt')->unserialize();
 
 $data = Get::files(PLUGIN . DS . 'redirect' . DS . 'cargo', 'txt', 'DESC', 'last_update');
 $offset = Request::get('page', 1);
@@ -15,6 +15,7 @@ if(empty($redirect_config['domain'])) {
   <a class="tab active" href="#tab-content-1-1"><i class="fa fa-fw fa-database"></i> <?php echo $speak->plugin_redirect_title_data; ?></a>
   <a class="tab" href="#tab-content-1-2"><i class="fa fa-fw fa-pencil"></i> <?php echo $speak->plugin_redirect_title_new_redirection; ?></a>
   <a class="tab" href="#tab-content-1-3"><i class="fa fa-fw fa-cog"></i> <?php echo $speak->config; ?></a>
+  <a class="tab" href="<?php echo $config->url . '/' . $config->manager->slug; ?>/plugin/redirect/backup"><i class="fa fa-fw fa-download"></i> <?php echo $speak->plugin_redirect_title_create_backup; ?></a>
 </div>
 <div class="tab-content-area">
   <div class="tab-content" id="tab-content-1-1">
@@ -35,24 +36,19 @@ if(empty($redirect_config['domain'])) {
         </tr>
       </thead>
       <tbody>
-        <?php foreach($chunks as $file): ?>
-        <?php $_file = Text::toArray(File::open($file['path'])->read()); ?>
+        <?php foreach($chunks as $_file): ?>
+        <?php $_file = $_file + Text::toArray(File::open($_file['path'])->read()); ?>
         <tr>
-          <td><a class="get-url" href="<?php echo $redirect_config['domain'] . '/' . $redirect_config['slug'] . '/' . basename($file['name'], '.txt'); ?>" title="<?php echo $speak->plugin_redirect_title_get_url; ?>" target="_blank"><?php echo basename($file['name'], '.txt'); ?></a></td>
+          <td><a class="get-url" href="<?php echo $redirect_config['domain'] . '/' . $redirect_config['slug'] . '/' . $_file['name']; ?>" title="<?php echo $speak->plugin_redirect_title_get_url; ?>" target="_blank"><?php echo $_file['name']; ?></a></td>
           <td><?php echo $_file['destination']; ?></td>
           <td><?php echo $_file['hits']; ?></td>
-          <td><a class="text-error delete-url" href="<?php echo $config->url . '/' . $config->manager->slug . '/plugin/redirect/kill/id:' . basename($file['name'], '.txt'); ?>"><i class="fa fa-times-circle"></i> <?php echo $speak->delete; ?></a></td>
+          <td><a class="text-error delete-url" href="<?php echo $config->url . '/' . $config->manager->slug . '/plugin/redirect/kill/id:' . $_file['name']; ?>"><i class="fa fa-times-circle"></i> <?php echo $speak->delete; ?></a></td>
         </tr>
         <?php endforeach; ?>
       </tbody>
     </table>
-    <p class="cf">
-      <?php if($offset > 1): ?>
-      <span class="pull-left"><a href="?page=<?php echo ((int) $offset - 1); ?>"><i class="fa fa-arrow-circle-left"></i> <?php echo $speak->prev; ?></a></span>
-      <?php endif; ?>
-      <?php if($offset < ceil(count($data) / $config->per_page)): ?>
-      <span class="pull-right"><a href="?page=<?php echo ((int) $offset + 1); ?>"><?php echo $speak->next; ?> <i class="fa fa-arrow-circle-right"></i></a></span>
-      <?php endif; ?>
+    <p class="pager cf text-center">
+      <?php if($offset > 1): ?><a href="?page=<?php echo ((int) $offset - 1); ?>"><?php echo $speak->prev; ?></a><?php else: ?><span><?php echo $speak->prev; ?></span><?php endif; ?> &middot; <?php if($offset < ceil(count($data) / $config->per_page)): ?><a href="?page=<?php echo ((int) $offset + 1); ?>"><?php echo $speak->next; ?></a><?php else: ?><span><?php echo $speak->next; ?></span><?php endif; ?>
     </p>
     <?php else: ?>
     <?php if($offset < 1 || $offset > ceil(count($data) / $config->per_page)): ?>
@@ -64,24 +60,24 @@ if(empty($redirect_config['domain'])) {
   </div>
   <div class="tab-content hidden" id="tab-content-1-2">
     <form class="form-plugin" action="<?php echo $config->url . '/' . $config->manager->slug; ?>/plugin/redirect/create" method="post">
-      <input name="token" type="hidden" value="<?php echo Guardian::makeToken(); ?>">
+      <input name="token" type="hidden" value="<?php echo $token; ?>">
       <label class="grid-group">
         <span class="grid span-1 form-label"><?php echo $speak->id; ?></span>
-        <span class="grid span-5"><input name="slug" type="text" class="input-block" value="<?php echo time(); ?>"></span>
+        <span class="grid span-5"><input name="slug" type="text" class="input-block" value="<?php echo Guardian::wayback('slug', time()); ?>"></span>
       </label>
       <label class="grid-group">
         <span class="grid span-1 form-label"><?php echo $speak->plugin_redirect_title_destination; ?></span>
-        <span class="grid span-5"><input name="destination" type="url" class="input-block"></span>
+        <span class="grid span-5"><input name="destination" type="url" class="input-block" value="<?php echo Guardian::wayback('destination', 'http://'); ?>"></span>
       </label>
       <div class="grid-group">
         <span class="grid span-1"></span>
-        <span class="grid span-5"><button class="btn btn-success btn-create" type="submit"><i class="fa fa-check-circle"></i> <?php echo $speak->create; ?></button></span>
+        <span class="grid span-5"><button class="btn btn-construct" type="submit"><i class="fa fa-check-circle"></i> <?php echo $speak->create; ?></button></span>
       </div>
     </form>
   </div>
   <div class="tab-content hidden" id="tab-content-1-3">
     <form class="form-plugin" action="<?php echo $config->url . '/' . $config->manager->slug; ?>/plugin/redirect/update" method="post">
-      <input name="token" type="hidden" value="<?php echo Guardian::makeToken(); ?>">
+      <input name="token" type="hidden" value="<?php echo $token; ?>">
       <label class="grid-group">
         <span class="grid span-1 form-label"><?php echo $speak->slug; ?> <i class="fa fa-question-circle text-info help" title="<?php echo $speak->plugin_redirect_description_slug; ?>"></i></span>
         <span class="grid span-5"><input name="slug" type="text" class="input-block" value="<?php echo $redirect_config['slug']; ?>"></span>
@@ -92,12 +88,11 @@ if(empty($redirect_config['domain'])) {
       </label>
       <div class="grid-group">
         <span class="grid span-1"></span>
-        <span class="grid span-5"><button class="btn btn-primary btn-update" type="submit"><i class="fa fa-check-circle"></i> <?php echo $speak->update; ?></button></span>
+        <span class="grid span-5"><button class="btn btn-action" type="submit"><i class="fa fa-check-circle"></i> <?php echo $speak->update; ?></button></span>
       </div>
     </form>
   </div>
 </div>
-
 <div class="modal modal-redirect" data-trigger=".table-redirect .get-url">
   <h3 class="modal-header"><?php echo $speak->plugin_redirect_title_get_url; ?></h3>
   <a class="modal-close-x" href="#close-modal"><i class="fa fa-times-circle"></i></a>
@@ -119,6 +114,6 @@ if(empty($redirect_config['domain'])) {
     </div>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-primary modal-close"><i class="fa fa-check-circle"></i> <?php echo $speak->ok; ?></button>
+    <button class="btn btn-action modal-close"><i class="fa fa-check-circle"></i> <?php echo $speak->ok; ?></button>
   </div>
 </div>
