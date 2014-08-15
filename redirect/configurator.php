@@ -4,7 +4,7 @@ $redirect_config = File::open(PLUGIN . DS . 'redirect' . DS . 'states' . DS . 'c
 
 $data = Get::files(PLUGIN . DS . 'redirect' . DS . 'cargo', 'txt', 'DESC', 'last_update');
 $offset = Request::get('page', 1);
-$chunks = Mecha::eat($data)->chunk($offset, $config->per_page)->vomit();
+$chunks = Mecha::eat($data)->chunk($offset, $config->per_page * 2)->vomit();
 
 if(empty($redirect_config['domain'])) {
     $redirect_config['domain'] = $config->url;
@@ -48,10 +48,10 @@ if(empty($redirect_config['domain'])) {
       </tbody>
     </table>
     <p class="pager cf text-center">
-      <?php if($offset > 1): ?><a href="?page=<?php echo ((int) $offset - 1); ?>"><?php echo $speak->prev; ?></a><?php else: ?><span><?php echo $speak->prev; ?></span><?php endif; ?> &middot; <?php if($offset < ceil(count($data) / $config->per_page)): ?><a href="?page=<?php echo ((int) $offset + 1); ?>"><?php echo $speak->next; ?></a><?php else: ?><span><?php echo $speak->next; ?></span><?php endif; ?>
+      <?php if($offset > 1): ?><a href="?page=<?php echo ((int) $offset - 1); ?>"><?php echo $speak->prev; ?></a><?php else: ?><span><?php echo $speak->prev; ?></span><?php endif; ?> &middot; <?php if($offset < ceil(count($data) / ($config->per_page * 2))): ?><a href="?page=<?php echo ((int) $offset + 1); ?>"><?php echo $speak->next; ?></a><?php else: ?><span><?php echo $speak->next; ?></span><?php endif; ?>
     </p>
     <?php else: ?>
-    <?php if($offset < 1 || $offset > ceil(count($data) / $config->per_page)): ?>
+    <?php if($offset < 1 || $offset > ceil(count($data) / ($config->per_page * 2))): ?>
     <p><?php echo $speak->notify_error_not_found; ?></p>
     <?php else: ?>
     <p><?php echo Config::speak('notify_empty', array(strtolower($speak->files))); ?></p>
