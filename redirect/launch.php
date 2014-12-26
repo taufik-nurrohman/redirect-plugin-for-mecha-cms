@@ -114,7 +114,7 @@ Route::accept($config->manager->slug . '/plugin/redirect/backup', function() use
     if( ! Guardian::happy()) {
         Shield::abort();
     }
-    $name = Text::parse($config->title)->to_slug . '.plugins.redirect.cargo_' . date('Y-m-d-H-i-s') . '.zip';
+    $name = Text::parse($config->title)->to_slug . '.cabinet.plugins.redirect.cargo_' . date('Y-m-d-H-i-s') . '.zip';
     Package::take(PLUGIN . DS . 'redirect' . DS . 'cargo')->pack(ROOT . DS . $name);
     Guardian::kick($config->manager->slug . '/backup/send:' . $name);
 });
