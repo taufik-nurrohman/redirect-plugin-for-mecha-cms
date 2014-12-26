@@ -5,10 +5,11 @@ plugin_redirect_title_domain: Domain
 plugin_redirect_title_destination: Tujuan
 plugin_redirect_title_hits: Kunjungan
 plugin_redirect_title_get_url: Dapatkan Tautan
+plugin_redirect_title_create_backup: Unduh Data
 
 plugin_redirect_title_direct_link: Tautan Langsung
 
 plugin_redirect_description_slug: Mengubah ini akan membunuh tautan-tautan pengalihan yang telah Anda bagikan ke teman-teman Anda.
 plugin_redirect_description_domain: Jika Anda memiliki &lt;em&gt;parked domain&lt;/em&gt; untuk memperpendek URL pengarah, Anda bisa menambahkannya ke sini.
 plugin_redirect_description_direct_link: Tidak mudah diperbaiki, lebih baik digunakan untuk keperluan berbagi saja.
-plugin_redirect_description_shortcode: Mudah diperbaiki, digunakan secara lokal saja. Tanamkan kode ini ke dalam konten artikel dan halaman statis Anda.
+plugin_redirect_description_shortcode: Mudah diperbaiki, digunakan secara lokal saja. Tanamkan kode ini di dalam konten artikel dan halaman statis Anda.
