@@ -1,8 +1,8 @@
 <?php
 
-$redirect_config = File::open(PLUGIN . DS . 'redirect' . DS . 'states' . DS . 'config.txt')->unserialize();
+$redirect_config = File::open(PLUGIN . DS . basename(__DIR__) . DS . 'states' . DS . 'config.txt')->unserialize();
 
-$data = Get::files(PLUGIN . DS . 'redirect' . DS . 'cargo', 'txt', 'DESC', 'last_update');
+$data = Get::files(PLUGIN . DS . basename(__DIR__) . DS . 'cargo', 'txt', 'DESC', 'last_update');
 $offset = Request::get('page', 1);
 $chunks = Mecha::eat($data)->chunk($offset, $config->per_page * 2)->vomit();
 
@@ -15,7 +15,7 @@ if(empty($redirect_config['domain'])) {
   <a class="tab active" href="#tab-content-1-1"><i class="fa fa-fw fa-database"></i> <?php echo $speak->plugin_redirect_title_data; ?></a>
   <a class="tab" href="#tab-content-1-2"><i class="fa fa-fw fa-pencil"></i> <?php echo $speak->plugin_redirect_title_new_redirection; ?></a>
   <a class="tab" href="#tab-content-1-3"><i class="fa fa-fw fa-cog"></i> <?php echo $speak->config; ?></a>
-  <a class="tab" href="<?php echo $config->url . '/' . $config->manager->slug; ?>/plugin/redirect/backup"><i class="fa fa-fw fa-download"></i> <?php echo $speak->plugin_redirect_title_create_backup; ?></a>
+  <a class="tab" href="<?php echo $config->url . '/' . $config->manager->slug; ?>/plugin/<?php echo basename(__DIR__); ?>/backup"><i class="fa fa-fw fa-download"></i> <?php echo $speak->plugin_redirect_title_create_backup; ?></a>
 </div>
 <div class="tab-content-area">
   <div class="tab-content" id="tab-content-1-1">
@@ -42,7 +42,7 @@ if(empty($redirect_config['domain'])) {
           <td><a class="get-url" href="<?php echo $redirect_config['domain'] . '/' . $redirect_config['slug'] . '/' . $_file['name']; ?>" title="<?php echo $speak->plugin_redirect_title_get_url; ?>" target="_blank"><?php echo $_file['name']; ?></a></td>
           <td><?php echo $_file['destination']; ?></td>
           <td><?php echo $_file['hits']; ?></td>
-          <td><a class="text-error delete-url" href="<?php echo $config->url . '/' . $config->manager->slug . '/plugin/redirect/kill/id:' . $_file['name']; ?>"><i class="fa fa-times-circle"></i> <?php echo $speak->delete; ?></a></td>
+          <td><a class="text-error delete-url" href="<?php echo $config->url . '/' . $config->manager->slug . '/plugin/' . basename(__DIR__) . '/kill/id:' . $_file['name']; ?>"><i class="fa fa-times-circle"></i> <?php echo $speak->delete; ?></a></td>
         </tr>
         <?php endforeach; ?>
       </tbody>
@@ -59,7 +59,7 @@ if(empty($redirect_config['domain'])) {
     <?php endif; ?>
   </div>
   <div class="tab-content hidden" id="tab-content-1-2">
-    <form class="form-plugin" action="<?php echo $config->url . '/' . $config->manager->slug; ?>/plugin/redirect/create" method="post">
+    <form class="form-plugin" action="<?php echo $config->url . '/' . $config->manager->slug; ?>/plugin/<?php echo basename(__DIR__); ?>/create" method="post">
       <input name="token" type="hidden" value="<?php echo $token; ?>">
       <label class="grid-group">
         <span class="grid span-1 form-label"><?php echo $speak->id; ?></span>
@@ -76,7 +76,7 @@ if(empty($redirect_config['domain'])) {
     </form>
   </div>
   <div class="tab-content hidden" id="tab-content-1-3">
-    <form class="form-plugin" action="<?php echo $config->url . '/' . $config->manager->slug; ?>/plugin/redirect/update" method="post">
+    <form class="form-plugin" action="<?php echo $config->url . '/' . $config->manager->slug; ?>/plugin/<?php echo basename(__DIR__); ?>/update" method="post">
       <input name="token" type="hidden" value="<?php echo $token; ?>">
       <label class="grid-group">
         <span class="grid span-1 form-label"><?php echo $speak->slug; ?> <i class="fa fa-question-circle text-info help" title="<?php echo $speak->plugin_redirect_description_slug; ?>"></i></span>
