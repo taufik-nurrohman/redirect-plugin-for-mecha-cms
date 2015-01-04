@@ -36,11 +36,11 @@ Weapon::add('SHIPMENT_REGION_BOTTOM', function() use($config) {
 // Generate shortcodes
 Filter::add('shortcode', function($content) use($config, $redirect_config) {
     $regex = array(
-        '#(?!`)\{\{redirect\.url +id\:([a-z0-9\-]+)\}\}(?!`)#' => ( ! empty($redirect_config['domain']) ? $redirect_config['domain'] : $config->url) . '/' . $redirect_config['slug'] . '/$1',
-        '#(?!`)\{\{redirect\.slug\}\}(?!`)#' => $redirect_config['slug'],
-        '#(?!`)\{\{redirect\.domain\}\}(?!`)#' => ! empty($redirect_config['domain']) ? $redirect_config['domain'] : $config->url
+        '#(?<!`)\{\{redirect\.url +id\:([a-z0-9\-]+)\}\}(?!`)#' => ( ! empty($redirect_config['domain']) ? $redirect_config['domain'] : $config->url) . '/' . $redirect_config['slug'] . '/$1',
+        '#(?<!`)\{\{redirect\.slug\}\}(?!`)#' => $redirect_config['slug'],
+        '#(?<!`)\{\{redirect\.domain\}\}(?!`)#' => ! empty($redirect_config['domain']) ? $redirect_config['domain'] : $config->url
     );
-    return preg_replace_callback('#(?!`)\{\{redirect\.hits? +id\:([a-z0-9\-]+)\}\}(?!`)#', function($matches) {
+    return preg_replace_callback('#(?<!`)\{\{redirect\.hits? +id\:([a-z0-9\-]+)\}\}(?!`)#', function($matches) {
         if($file = File::exist(PLUGIN . DS . basename(__DIR__) . DS . 'cargo' . DS . $matches[1] . '.txt')) {
             $data = Text::toArray(File::open($file)->read());
             return $data['hits'];
