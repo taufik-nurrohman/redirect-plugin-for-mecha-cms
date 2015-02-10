@@ -6,7 +6,7 @@ $data = Get::files(PLUGIN . DS . basename(__DIR__) . DS . 'cargo', 'txt', 'DESC'
 $offset = Request::get('page', 1);
 $chunks = Mecha::eat($data)->chunk($offset, $config->per_page * 2)->vomit();
 
-if(empty($redirect_config['domain'])) {
+if( ! Guardian::check($redirect_config['domain'], '->URL') || trim($redirect_config['domain']) === "") {
     $redirect_config['domain'] = $config->url;
 }
 
@@ -20,7 +20,7 @@ if(empty($redirect_config['domain'])) {
 <div class="tab-content-area">
   <div class="tab-content" id="tab-content-1-1">
     <?php if($chunks): ?>
-    <table class="table-bordered table-full table-redirect" data-confirm-delete-text="<?php echo $speak->notify_confirm_delete; ?>">
+    <table class="table-bordered table-full table-redirect" id="table-redirect" data-confirm-delete-text="<?php echo $speak->notify_confirm_delete; ?>">
       <colgroup>
         <col style="width:10em;">
         <col>
@@ -84,7 +84,7 @@ if(empty($redirect_config['domain'])) {
       </label>
       <label class="grid-group">
         <span class="grid span-1 form-label"><?php echo $speak->plugin_redirect_title_domain; ?> <i class="fa fa-question-circle text-info help" title="<?php echo $speak->plugin_redirect_description_domain; ?>"></i></span>
-        <span class="grid span-5"><input name="domain" type="url" class="input-block" value="<?php echo ! empty($redirect_config['domain']) ? $redirect_config['domain'] : $config->url; ?>"></span>
+        <span class="grid span-5"><input name="domain" type="url" class="input-block" value="<?php echo $redirect_config['domain']; ?>"></span>
       </label>
       <div class="grid-group">
         <span class="grid span-1"></span>
@@ -93,7 +93,7 @@ if(empty($redirect_config['domain'])) {
     </form>
   </div>
 </div>
-<div class="modal modal-redirect" data-trigger=".table-redirect .get-url">
+<div class="modal modal-redirect" id="modal-redirect" data-trigger="#table-redirect .get-url">
   <h3 class="modal-header"><?php echo $speak->plugin_redirect_title_get_url; ?></h3>
   <a class="modal-close-x" href="#close-modal"><i class="fa fa-times-circle"></i></a>
   <div class="modal-content">
