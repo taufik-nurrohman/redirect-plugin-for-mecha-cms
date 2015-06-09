@@ -21,7 +21,7 @@ Filter::add('shortcode', function($content) use($config, $redirect_config) {
     return preg_replace_callback('#(?<!`)\{\{redirect\.hits? +id\:([a-z0-9\-]+)\}\}(?!`)#', function($matches) {
         if($file = File::exist(PLUGIN . DS . basename(__DIR__) . DS . 'cargo' . DS . $matches[1] . '.txt')) {
             $data = Text::toArray(File::open($file)->read());
-            return $data['hits'];
+            return $data['Hits'];
         }
         return '<mark title="' . Config::speak('notify_file_not_exist', '&lsquo;' . $matches[1] . '.txt&rsquo;') . '">?</mark>';
     }, preg_replace(array_keys($regex), array_values($regex), $content));
@@ -33,7 +33,7 @@ Route::accept($redirect_config['slug'] . '/(:any)', function($slug = "") use($co
         Shield::abort(); // File not found!
     }
     $data = Text::toArray(File::open($file)->read());
-    $hits = 1 + (int) $data['hits'];
-    File::open($file)->write('destination' . S . ' ' . $data['destination'] . "\n" . 'hits' . S . ' ' . $hits)->save(0600);
-    Guardian::kick($data['destination']);
+    $hits = 1 + (int) $data['Hits'];
+    File::open($file)->write('Destination' . S . ' ' . $data['Destination'] . "\n" . 'Hits' . S . ' ' . $hits)->save(0600);
+    Guardian::kick($data['Destination']);
 });

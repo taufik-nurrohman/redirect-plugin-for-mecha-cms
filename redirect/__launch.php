@@ -51,7 +51,7 @@ Route::accept($config->manager->slug . '/plugin/' . basename(__DIR__) . '/create
             Notify::error(Config::speak('notify_error_slug_exist', $file));
         }
         if( ! Notify::errors()) {
-            File::write('destination' . S . ' ' . $request['destination'] . "\n" . 'hits' . S . ' 0')->saveTo(PLUGIN . DS . basename(__DIR__) . DS . 'cargo' . DS . $file . '.txt', 0600);
+            File::write('Destination' . S . ' ' . $request['destination'] . "\n" . 'Hits' . S . ' 0')->saveTo(PLUGIN . DS . basename(__DIR__) . DS . 'cargo' . DS . $file . '.txt', 0600);
             Notify::success(Config::speak('notify_file_created', '<code>' . $file . '</code>'));
         }
         Guardian::kick(dirname($config->url_current));

@@ -2,7 +2,7 @@
 
 $redirect_config = File::open(PLUGIN . DS . basename(__DIR__) . DS . 'states' . DS . 'config.txt')->unserialize();
 
-$data = Get::files(PLUGIN . DS . basename(__DIR__) . DS . 'cargo', 'txt', 'DESC', 'last_update');
+$data = Get::files(PLUGIN . DS . basename(__DIR__) . DS . 'cargo', 'txt', 'DESC', 'update');
 $offset = Request::get('page', 1);
 $chunks = Mecha::eat($data)->chunk($offset, $config->per_page * 2)->vomit();
 
@@ -40,8 +40,8 @@ if( ! Guardian::check($redirect_config['domain'], '->URL') || trim($redirect_con
               'title' => $speak->plugin_redirect_title_get_url,
               'target' => '_blank'
           )); ?></td>
-          <td><?php echo $_file['destination']; ?></td>
-          <td class="td-collapse"><?php echo $_file['hits']; ?></td>
+          <td><?php echo $_file['Destination']; ?></td>
+          <td class="td-collapse"><?php echo $_file['Hits']; ?></td>
           <td class="td-collapse"><?php echo Jot::a('error', $config->manager->slug . '/plugin/' . basename(__DIR__) . '/kill/id:' . $_file['name'], Jot::icon('times-circle') . ' ' . $speak->delete, array('class' => 'delete-url')); ?></td>
         </tr>
         <?php endforeach; ?>
