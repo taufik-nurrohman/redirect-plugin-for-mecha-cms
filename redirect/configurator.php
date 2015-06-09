@@ -40,8 +40,8 @@ if( ! Guardian::check($redirect_config['domain'], '->URL') || trim($redirect_con
               'title' => $speak->plugin_redirect_title_get_url,
               'target' => '_blank'
           )); ?></td>
-          <td><?php echo $_file['Destination']; ?></td>
-          <td class="td-collapse"><?php echo $_file['Hits']; ?></td>
+          <td><?php echo isset($_file['Destination']) ? $_file['Destination'] : $_file['destination']; ?></td>
+          <td class="td-collapse"><?php echo isset($_file['Hits']) ? $_file['Hits'] : $_file['hits']; ?></td>
           <td class="td-collapse"><?php echo Jot::a('error', $config->manager->slug . '/plugin/' . basename(__DIR__) . '/kill/id:' . $_file['name'], Jot::icon('times-circle') . ' ' . $speak->delete, array('class' => 'delete-url')); ?></td>
         </tr>
         <?php endforeach; ?>
