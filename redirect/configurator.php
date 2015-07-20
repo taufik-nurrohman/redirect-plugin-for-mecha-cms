@@ -1,12 +1,12 @@
 <?php
 
-$redirect_config = File::open(PLUGIN . DS . basename(__DIR__) . DS . 'states' . DS . 'config.txt')->unserialize();
+$redirect_config = File::open(PLUGIN . DS . File::B(__DIR__) . DS . 'states' . DS . 'config.txt')->unserialize();
 
-$data = Get::files(PLUGIN . DS . basename(__DIR__) . DS . 'cargo', 'txt', 'DESC', 'update');
+$data = Get::files(PLUGIN . DS . File::B(__DIR__) . DS . 'assets' . DS . 'cargo', 'txt', 'DESC', 'update');
 $offset = Request::get('page', 1);
 $chunks = Mecha::eat($data)->chunk($offset, $config->per_page * 2)->vomit();
 
-if( ! Guardian::check($redirect_config['domain'], '->URL') || trim($redirect_config['domain']) === "") {
+if(trim($redirect_config['domain']) === "" || ! Guardian::check($redirect_config['domain'], '->url')) {
     $redirect_config['domain'] = $config->url;
 }
 
@@ -15,8 +15,8 @@ if( ! Guardian::check($redirect_config['domain'], '->URL') || trim($redirect_con
   <a class="tab active" href="#tab-content-1-1"><?php echo Jot::icon('database', 'fw') . ' ' . $speak->plugin_redirect_title_data; ?></a>
   <a class="tab" href="#tab-content-1-2"><?php echo Jot::icon('pencil', 'fw') . ' ' . $speak->plugin_redirect_title_new_redirection; ?></a>
   <a class="tab" href="#tab-content-1-3"><?php echo Jot::icon('cog', 'fw') . ' ' . $speak->config; ?></a>
-  <?php if(file_exists(PLUGIN . DS . basename(__DIR__) . DS . 'cargo')): ?>
-  <a class="tab" href="<?php echo $config->url . '/' . $config->manager->slug; ?>/plugin/<?php echo basename(__DIR__); ?>/backup"><?php echo Jot::icon('download', 'fw') . ' ' . $speak->plugin_redirect_title_create_backup; ?></a>
+  <?php if(file_exists(PLUGIN . DS . File::B(__DIR__) . DS . 'assets' . DS . 'cargo') && $data !== false): ?>
+  <a class="tab" href="<?php echo $config->url . '/' . $config->manager->slug; ?>/plugin/<?php echo File::B(__DIR__); ?>/backup"><?php echo Jot::icon('download', 'fw') . ' ' . $speak->plugin_redirect_title_create_backup; ?></a>
   <?php endif; ?>
 </div>
 <div class="tab-content-area">
@@ -42,7 +42,7 @@ if( ! Guardian::check($redirect_config['domain'], '->URL') || trim($redirect_con
           )); ?></td>
           <td><?php echo isset($_file['Destination']) ? $_file['Destination'] : $_file['destination']; ?></td>
           <td class="td-collapse"><?php echo isset($_file['Hits']) ? $_file['Hits'] : $_file['hits']; ?></td>
-          <td class="td-collapse"><?php echo Jot::a('error', $config->manager->slug . '/plugin/' . basename(__DIR__) . '/kill/id:' . $_file['name'], Jot::icon('times-circle') . ' ' . $speak->delete, array('class' => 'delete-url')); ?></td>
+          <td class="td-collapse"><?php echo Jot::a('error', $config->manager->slug . '/plugin/' . File::B(__DIR__) . '/kill/id:' . $_file['name'], Jot::icon('times-circle') . ' ' . $speak->delete, array('class' => 'delete-url')); ?></td>
         </tr>
         <?php endforeach; ?>
       </tbody>
@@ -59,7 +59,7 @@ if( ! Guardian::check($redirect_config['domain'], '->URL') || trim($redirect_con
     <?php endif; ?>
   </div>
   <div class="tab-content hidden" id="tab-content-1-2">
-    <form class="form-plugin" action="<?php echo $config->url . '/' . $config->manager->slug; ?>/plugin/<?php echo basename(__DIR__); ?>/create" method="post">
+    <form class="form-plugin" action="<?php echo $config->url . '/' . $config->manager->slug; ?>/plugin/<?php echo File::B(__DIR__); ?>/create" method="post">
       <?php echo Form::hidden('token', $token); ?>
       <label class="grid-group">
         <span class="grid span-1 form-label"><?php echo $speak->id; ?></span>
@@ -76,7 +76,7 @@ if( ! Guardian::check($redirect_config['domain'], '->URL') || trim($redirect_con
     </form>
   </div>
   <div class="tab-content hidden" id="tab-content-1-3">
-    <form class="form-plugin" action="<?php echo $config->url . '/' . $config->manager->slug; ?>/plugin/<?php echo basename(__DIR__); ?>/update" method="post">
+    <form class="form-plugin" action="<?php echo $config->url . '/' . $config->manager->slug; ?>/plugin/<?php echo File::B(__DIR__); ?>/update" method="post">
       <?php echo Form::hidden('token', $token); ?>
       <label class="grid-group">
         <span class="grid span-1 form-label"><?php echo $speak->slug . ' <span class="text-info help" title="' . $speak->plugin_redirect_description_slug . '">' . Jot::icon('question-circle') . '</span>'; ?></span>

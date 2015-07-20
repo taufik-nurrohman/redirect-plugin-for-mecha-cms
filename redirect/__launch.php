@@ -6,8 +6,8 @@
  * --------------
  */
 
-Weapon::add('SHIPMENT_REGION_BOTTOM', function() use($config) {
-    if($config->url_path === $config->manager->slug . '/plugin/' . basename(__DIR__)) {
+if(Route::is($config->manager->slug . '/plugin/' . File::B(__DIR__))) {
+    Weapon::add('SHIPMENT_REGION_BOTTOM', function() {
         echo '<script>
 (function(w, d, base) {
     if (typeof base === "undefined") return;
@@ -34,8 +34,8 @@ Weapon::add('SHIPMENT_REGION_BOTTOM', function() use($config) {
     });
 })(window, document, DASHBOARD);
 </script>';
-    }
-}, 11);
+    }, 11);
+}
 
 
 /**
@@ -43,18 +43,18 @@ Weapon::add('SHIPMENT_REGION_BOTTOM', function() use($config) {
  * ---------------
  */
 
-Route::accept($config->manager->slug . '/plugin/' . basename(__DIR__) . '/create', function() use($config, $speak) {
+Route::accept($config->manager->slug . '/plugin/' . File::B(__DIR__) . '/create', function() use($config, $speak) {
     if($request = Request::post()) {
         Guardian::checkToken($request['token']);
         $file = Text::parse($request['slug'], '->slug');
-        if(file_exists(PLUGIN . DS . basename(__DIR__) . DS . 'cargo' . DS . $file . '.txt')) {
+        if(file_exists(PLUGIN . DS . File::B(__DIR__) . DS . 'assets' . DS . 'cargo' . DS . $file . '.txt')) {
             Notify::error(Config::speak('notify_error_slug_exist', $file));
         }
         if( ! Notify::errors()) {
-            File::write('Destination' . S . ' ' . $request['destination'] . "\n" . 'Hits' . S . ' 0')->saveTo(PLUGIN . DS . basename(__DIR__) . DS . 'cargo' . DS . $file . '.txt', 0600);
+            File::write('Destination' . S . ' ' . $request['destination'] . "\n" . 'Hits' . S . ' 0')->saveTo(PLUGIN . DS . File::B(__DIR__) . DS . 'assets' . DS . 'cargo' . DS . $file . '.txt', 0600);
             Notify::success(Config::speak('notify_file_created', '<code>' . $file . '</code>'));
         }
-        Guardian::kick(dirname($config->url_current));
+        Guardian::kick(File::D($config->url_current));
     }
 });
 
@@ -64,13 +64,13 @@ Route::accept($config->manager->slug . '/plugin/' . basename(__DIR__) . '/create
  * ----------------
  */
 
-Route::accept($config->manager->slug . '/plugin/' . basename(__DIR__) . '/kill/id:(:any)', function($slug = "") use($config, $speak) {
-    if( ! $file = File::exist(PLUGIN . DS . basename(__DIR__) . DS . 'cargo' . DS . $slug . '.txt')) {
+Route::accept($config->manager->slug . '/plugin/' . File::B(__DIR__) . '/kill/id:(:any)', function($slug = "") use($config, $speak) {
+    if( ! $file = File::exist(PLUGIN . DS . File::B(__DIR__) . DS . 'assets' . DS . 'cargo' . DS . $slug . '.txt')) {
         Shield::abort();
     }
     File::open($file)->delete();
     Notify::success(Config::speak('notify_file_deleted', '<code>' . $slug . '</code>'));
-    Guardian::kick($config->manager->slug . '/plugin/' . basename(__DIR__));
+    Guardian::kick($config->manager->slug . '/plugin/' . File::B(__DIR__));
 });
 
 
@@ -79,9 +79,9 @@ Route::accept($config->manager->slug . '/plugin/' . basename(__DIR__) . '/kill/i
  * -------------
  */
 
-Route::accept($config->manager->slug . '/plugin/' . basename(__DIR__) . '/backup', function() use($config, $speak) {
-    $name = Text::parse($config->title, '->slug') . '.cabinet.plugins.' . basename(__DIR__) . '.cargo_' . date('Y-m-d-H-i-s') . '.zip';
-    Package::take(PLUGIN . DS . basename(__DIR__) . DS . 'cargo')->pack(ROOT . DS . $name);
+Route::accept($config->manager->slug . '/plugin/' . File::B(__DIR__) . '/backup', function() use($config, $speak) {
+    $name = Text::parse($config->title, '->slug') . '.cabinet.plugins.' . File::B(__DIR__) . '.assets.cargo_' . date('Y-m-d-H-i-s') . '.zip';
+    Package::take(PLUGIN . DS . File::B(__DIR__) . DS . 'assets' . DS . 'cargo')->pack(ROOT . DS . $name);
     Guardian::kick($config->manager->slug . '/backup/send:' . $name);
 });
 
@@ -91,12 +91,12 @@ Route::accept($config->manager->slug . '/plugin/' . basename(__DIR__) . '/backup
  * -------------------------
  */
 
-Route::accept($config->manager->slug . '/plugin/' . basename(__DIR__) . '/update', function() use($config, $speak) {
+Route::accept($config->manager->slug . '/plugin/' . File::B(__DIR__) . '/update', function() use($config, $speak) {
     if($request = Request::post()) {
         Guardian::checkToken($request['token']);
         unset($request['token']); // Remove token from request array
-        File::serialize($request)->saveTo(PLUGIN . DS . basename(__DIR__) . DS . 'states' . DS . 'config.txt', 0600);
+        File::serialize($request)->saveTo(PLUGIN . DS . File::B(__DIR__) . DS . 'states' . DS . 'config.txt', 0600);
         Notify::success(Config::speak('notify_success_updated', $speak->plugin));
-        Guardian::kick(dirname($config->url_current));
+        Guardian::kick(File::D($config->url_current));
     }
 });

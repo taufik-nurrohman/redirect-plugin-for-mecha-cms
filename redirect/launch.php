@@ -1,13 +1,13 @@
 <?php
 
 // Load the configuration data
-$redirect_config = File::open(PLUGIN . DS . basename(__DIR__) . DS . 'states' . DS . 'config.txt')->unserialize();
+$redirect_config = File::open(PLUGIN . DS . File::B(__DIR__) . DS . 'states' . DS . 'config.txt')->unserialize();
 
 // Add shortcut link to the manager menu
 Config::merge('manager_menu', array(
     Config::speak('plugin_redirect_title_redirect') => array(
         'icon' => 'random',
-        'url' => $config->manager->slug . '/plugin/' . basename(__DIR__)
+        'url' => $config->manager->slug . '/plugin/' . File::B(__DIR__)
     )
 ));
 
@@ -19,7 +19,7 @@ Filter::add('shortcode', function($content) use($config, $redirect_config) {
         '#(?<!`)\{\{redirect\.domain\}\}(?!`)#' => trim($redirect_config['domain']) !== "" ? $redirect_config['domain'] : $config->url
     );
     return preg_replace_callback('#(?<!`)\{\{redirect\.hits? +id\:([a-z0-9\-]+)\}\}(?!`)#', function($matches) {
-        if($file = File::exist(PLUGIN . DS . basename(__DIR__) . DS . 'cargo' . DS . $matches[1] . '.txt')) {
+        if($file = File::exist(PLUGIN . DS . File::B(__DIR__) . DS . 'assets' . DS . 'cargo' . DS . $matches[1] . '.txt')) {
             $data = Text::toArray(File::open($file)->read());
             return isset($data['Hits']) ? $data['Hits'] : $data['hits'];
         }
@@ -29,7 +29,7 @@ Filter::add('shortcode', function($content) use($config, $redirect_config) {
 
 // Redirection
 Route::accept($redirect_config['slug'] . '/(:any)', function($slug = "") use($config, $speak) {
-    if( ! $file = File::exist(PLUGIN . DS . basename(__DIR__) . DS . 'cargo' . DS . $slug . '.txt')) {
+    if( ! $file = File::exist(PLUGIN . DS . File::B(__DIR__) . DS . 'assets' . DS . 'cargo' . DS . $slug . '.txt')) {
         Shield::abort(); // File not found!
     }
     $data = Text::toArray(File::open($file)->read());
