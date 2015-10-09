@@ -30,7 +30,7 @@ if(Route::is($config->manager->slug . '/plugin/' . File::B(__DIR__))) {
     base.add(\'on_modal_show\', function(data) {
         _input[0].value = data.target.href;
         _input[1].value = \'{{redirect.url id:\' + data.target.innerHTML + \'}}\';
-        _input[2].value = \'{{redirect.hits id:\' + data.target.innerHTML + \'}}\';
+        _input[2].value = \'{{redirect.hit id:\' + data.target.innerHTML + \'}}\';
     });
 })(window, document, DASHBOARD);
 </script>';
@@ -51,7 +51,7 @@ Route::accept($config->manager->slug . '/plugin/' . File::B(__DIR__) . '/create'
             Notify::error(Config::speak('notify_error_slug_exist', $file));
         }
         if( ! Notify::errors()) {
-            File::write('Destination' . S . ' ' . $request['destination'] . "\n" . 'Hits' . S . ' 0')->saveTo(PLUGIN . DS . File::B(__DIR__) . DS . 'assets' . DS . 'cargo' . DS . $file . '.txt', 0600);
+            File::write('0 ' . $request['destination'])->saveTo(PLUGIN . DS . File::B(__DIR__) . DS . 'assets' . DS . 'cargo' . DS . $file . '.txt', 0600);
             Notify::success(Config::speak('notify_file_created', '<code>' . $file . '</code>'));
         }
         Guardian::kick(File::D($config->url_current));

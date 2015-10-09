@@ -33,15 +33,15 @@ if(trim($redirect_config['domain']) === "" || ! Guardian::check($redirect_config
       </thead>
       <tbody>
         <?php foreach($chunks as $_file): ?>
-        <?php $_file = $_file + Text::toArray(File::open($_file['path'])->read()); ?>
+        <?php $p = explode(' ', File::open($_file['path'])->read(), 2); $hit = (int) trim($p[0]); $destination = trim($p[1]); ?>
         <tr>
           <td class="td-collapse"><?php echo Jot::a('default', $redirect_config['domain'] . '/' . $redirect_config['slug'] . '/' . $_file['name'], $_file['name'], array(
               'class' => 'get-url',
               'title' => $speak->plugin_redirect_title_get_url,
               'target' => '_blank'
           )); ?></td>
-          <td><?php echo isset($_file['Destination']) ? $_file['Destination'] : $_file['destination']; ?></td>
-          <td class="td-collapse"><?php echo isset($_file['Hits']) ? $_file['Hits'] : $_file['hits']; ?></td>
+          <td><?php echo $destination; ?></td>
+          <td class="td-collapse"><?php echo $hit; ?></td>
           <td class="td-collapse"><?php echo Jot::a('error', $config->manager->slug . '/plugin/' . File::B(__DIR__) . '/kill/id:' . $_file['name'], Jot::icon('times-circle') . ' ' . $speak->delete, array('class' => 'delete-url')); ?></td>
         </tr>
         <?php endforeach; ?>

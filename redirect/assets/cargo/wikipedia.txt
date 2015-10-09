@@ -1,2 +1,1 @@
-Destination: http://www.wikipedia.org
-Hits: 0
+0 http://www.wikipedia.org
