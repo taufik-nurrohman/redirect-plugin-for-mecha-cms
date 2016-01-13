@@ -1,7 +1,7 @@
 Title: URL Redirection
 Author: Taufik Nurrohman
 URL: http://latitudu.com
-Version: 1.3.0
+Version: 1.3.1
 
 ====
 
@@ -12,7 +12,7 @@ People usually use this kind of tool to hide their affiliate links. This plugin 
 ~~~ .markdown
 [click here to download](`{{redirect.url id:foo}}`) {.btn.btn-download}
 
-**Downloaded `{{redirect.hits id:foo}}` times!**
+**Downloaded `{{redirect.hit id:foo}}` times!**
 ~~~
 
 <!-- block:donate -->
